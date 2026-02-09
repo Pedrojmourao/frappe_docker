@@ -125,8 +125,9 @@ services:
 
   queue-long:
     image: frappe/erpnext:v15.96.1
-    networks:
-      - frappe_network
+    depends_on:
+      - redis-queue
+      - redis-cache
     deploy:
       restart_policy:
         condition: on-failure
@@ -144,8 +145,9 @@ services:
 
   queue-short:
     image: frappe/erpnext:v15.96.1
-    networks:
-      - frappe_network
+    depends_on:
+      - redis-queue
+      - redis-cache
     deploy:
       restart_policy:
         condition: on-failure
@@ -193,10 +195,11 @@ services:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
 
-  websocket:
+   websocket:
     image: frappe/erpnext:v15.96.1
-    networks:
-      - frappe_network
+    depends_on:
+      - redis-queue
+      - redis-cache
     deploy:
       restart_policy:
         condition: on-failure
